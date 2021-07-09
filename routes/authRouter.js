@@ -17,7 +17,7 @@ router.post('/login',async (req,res)=>{
             const valid = await bcrypt.compare(userAuth.password, user.password);
             if (valid){
                 const accessToken = jwt.sign({username:user.username},process.env.JWT_SECRET,{expiresIn: process.env.JWT_EXPIRE});
-                res.json({message:"login successd.",TOKEN:accessToken, ROLE:user.role.id})
+                res.json({message:"login successd.",TOKEN:"Bearer "+accessToken, ROLE:user.role.id})
             }else{
                 res.status(400).json({message:"username/password not match."})
             }
