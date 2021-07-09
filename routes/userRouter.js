@@ -36,7 +36,7 @@ router.get("/:id", userAuth,async (req,res)=>{
 router.post("/",async (req,res)=>{
     const exist = await userModel.findOne({username:req.body.username})
     if (exist != null) {
-        res.json({message:"username already exist."});
+        res.status(400).json({message:"username already exist."});
         return;
     }
     try{
@@ -96,15 +96,17 @@ router.post("/validateToken",(req,res)=>{
 
 })
 
-function userAuth(req,res,next){
+async function userAuth(req,res,next){
     const headerToken = req.headers.authorization;
     if (headerToken) {
         const token = headerToken.split(" ")[1];
         if (token){
             jwt.verify(token,process.env.JWT_SECRET,(err,data)=>{
                 if (err) res.status(403).json({message:err.message})
-                req.user = data
-                next()
+                else{
+                    req.user = data
+                    next()
+                }
             })
         }
     }else{
