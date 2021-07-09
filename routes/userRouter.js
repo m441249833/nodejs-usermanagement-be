@@ -52,7 +52,7 @@ router.post("/",async (req,res)=>{
 router.patch("/:id",userAuth, async (req,res)=>{
 
     try{
-        const user = await userModel.findById(req.params.id);
+        const user = await userModel.findById(req.params.id).select("-password");;
         console.log(user)
         if (user !== null) {
             if (req.body.email != null){
