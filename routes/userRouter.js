@@ -37,10 +37,12 @@ router.patch("/:id",userAuth, async (req,res)=>{
 
     try{
         const user = await userModel.findById(req.params.id).select("-password");;
-        console.log(user)
         if (user !== null) {
             if (req.body.email != null){
                 user.email = req.body.email;
+            }
+            if (req.body.role != null){
+                user.role = req.body.role;
             }
             //TODO more update fields
             const updatedUser = await user.save()
@@ -86,7 +88,5 @@ async function userAuth(req,res,next){
     }
 }
 
-
-router.use(userAuth)
 
 module.exports = router;
